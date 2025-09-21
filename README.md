@@ -1,108 +1,91 @@
-Clusterização K-Means – Iris Dataset
+# Clusterização K-Means – Iris Dataset
 
-Este projeto implementa o algoritmo K-Means em Python, aplicado ao famoso dataset Iris, com duas versões:
+Este projeto implementa o algoritmo K-Means **do zero** em Python, aplicado ao dataset clássico **Iris**, e também apresenta uma versão comparativa utilizando a biblioteca **scikit-learn**.
 
-Implementação do zero (hardcore/scratch)
+## O que é K-Means?
 
-Implementação usando sklearn
+K-Means é um algoritmo de aprendizado **não supervisionado** usado para **clustering** (agrupamento) de dados. O objetivo é dividir um conjunto de dados em `k` grupos (clusters), onde cada ponto pertence ao cluster cujo centroide está mais próximo.
 
-O objetivo é comparar qualidade e desempenho entre as duas abordagens.
+### Funcionamento do algoritmo:
 
-🔎 O que é K-Means?
+1. **Inicialização**: Escolhe `k` centroides aleatoriamente  
+2. **Atribuição**: Cada ponto é associado ao centroide mais próximo  
+3. **Atualização**: Os centroides são recalculados como a média dos pontos atribuídos  
+4. **Repetição**: O processo continua até os centroides estabilizarem  
 
-K-Means é um algoritmo de aprendizado não supervisionado usado para clustering (agrupamento) de dados. O objetivo é dividir um conjunto em k grupos (clusters), onde cada ponto pertence ao cluster cujo centróide está mais próximo.
+---
 
-Como funciona o algoritmo (versão do zero):
+## Estrutura do Repositório
 
-Inicialização: Escolhe k centróides aleatórios.
+- `kmeans_iris_hardcore.py` → Implementação **do zero** usando apenas NumPy 
+- `kmeans_iris_sklearn.py` → Implementação utilizando `scikit-learn` para comparação  
 
-Atribuição: Cada ponto é associado ao centróide mais próximo (distância euclidiana).
+- Arquivos de saída gerados:  
+  - `centroides_<versao>_k3.npy` / `centroides_<versao>_k5.npy`  
+  - `clusters_<versao>_k3.npy` / `clusters_<versao>_k5.npy`  
+  - `resultados_<versao>.txt` (resumo com métricas)  
+  
+---
 
-Atualização: Os centróides são recalculados como a média dos pontos do cluster.
+## Dataset Utilizado
 
-Repetição: Os passos 2–3 são repetidos até os centróides estabilizarem.
+**Iris Dataset**: 150 amostras de flores íris com 4 atributos:  
+- Comprimento da sépala  
+- Largura da sépala  
+- Comprimento da pétala  
+- Largura da pétala  
 
-📂 Estrutura do Código
-Implementações:
+---
 
-kmeans_iris_scratch.py → Algoritmo implementado manualmente (puro NumPy).
+## Como Executar
 
-kmeans_iris_sklearn.py → Algoritmo usando sklearn.cluster.KMeans.
-
-relatorio.txt → Comparação e análise dos resultados.
-
-Funções principais (scratch):
-
-inicializar_centroides() → Escolhe centróides iniciais.
-
-atribuir_clusters() → Calcula distâncias e define clusters.
-
-atualizar_centroides() → Recalcula centróides.
-
-kmeans() → Controla a execução até a convergência.
-
-Dataset utilizado:
-
-Iris Dataset: 150 amostras de flores íris com 4 características:
-
-Comprimento da sépala
-
-Largura da sépala
-
-Comprimento da pétala
-
-Largura da pétala
-
-(Obs: a variável target foi ignorada na clusterização.)
-
-▶️ Como executar
-Pré-requisitos:
+### Pré-requisitos:
+```bash
 pip install numpy scikit-learn
+```
 
-Execução:
-# Versão implementada do zero
-python kmeans_iris_scratch.py
+### Rodar versão implementada do zero:
+```bash
+python kmeans_iris_hardcore.py
+```
 
-# Versão sklearn
+### Rodar versão com scikit-learn:
+```bash
 python kmeans_iris_sklearn.py
+```
 
-📊 Resultados gerados
+---
 
-Ambas as implementações executam os experimentos com k=3 e k=5 clusters e geram:
+## Resultados Obtidos
 
-centroides_scratch_k*.npy / clusters_scratch_k*.npy
+O algoritmo foi testado para `k=3` (ideal para o dataset Iris) e `k=5`.
 
-centroides_sklearn_k*.npy / clusters_sklearn_k*.npy
+### Métricas avaliadas:
+- **Silhouette Score** → Qualidade do agrupamento (quanto maior, melhor)  
+- **Tempo de execução** → Comparação entre implementação manual e sklearn  
 
-resultados_scratch.txt
+### Exemplo de saída:
 
-resultados_sklearn.txt
-
-Métricas avaliadas:
-
-Silhouette Score (qualidade do clustering, -1 a 1, quanto maior melhor).
-
-Tempo de execução (desempenho).
-
-Resultados obtidos (exemplo real):
-[Scratch] k=3 silhouette=0.5528 tempo=0.0088s
-[Scratch] k=5 silhouette=0.4931 tempo=0.0024s
+```
+[Hardcore] k=3 silhouette=0.5528 tempo=0.0088s
+[Hardcore] k=5 silhouette=0.4931 tempo=0.0024s
 
 [Sklearn] k=3 silhouette=0.5528 tempo=3.3947s
 [Sklearn] k=5 silhouette=0.4912 tempo=0.0481s
+```
 
-Interpretação:
+### Interpretação:
+- Para **k=3**, o resultado é melhor (silhouette ~0.55), confirmando as 3 espécies do dataset.  
+- Para **k=5**, a divisão excessiva reduz a qualidade (~0.49).  
+- A versão **manual** roda mais rápido que a do `sklearn`, pois é otimizada para esse caso específico.  
 
-O melhor valor foi k=3, que corresponde naturalmente às 3 espécies do Iris.
+---
 
-A versão scratch foi mais rápida (código simples), mas menos robusta.
+## Características da Implementação
 
-A versão sklearn foi mais lenta (faz várias inicializações por padrão), porém mais estável.
+- ✅ Puro NumPy (versão hardcore)  
+- ✅ Reprodutibilidade com seed fixa  
+- ✅ Tratamento de clusters vazios  
+- ✅ Avaliação com Silhouette Score  
+- ✅ Comparação direta com `scikit-learn`  
 
-📌 Conclusão
-
-A implementação do zero reforçou o entendimento interno do K-Means.
-
-O sklearn demonstrou melhor robustez e praticidade em aplicações reais.
-
-O PCA (não mostrado aqui, mas disponível nos scripts) permitiu visualizar os clusters em 1D e 2D, confirmando que k=3 é a melhor escolha.
